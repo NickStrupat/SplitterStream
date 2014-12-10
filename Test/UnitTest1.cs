@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test {
+namespace SplitterStreams.Test {
 	[TestClass]
 	public class UnitTest1 {
 		[TestMethod]
@@ -13,7 +13,7 @@ namespace Test {
 			using (var source = new MemoryStream(bytes))
 			using (var destination1 = new MemoryStream())
 			using (var destination2 = new MemoryStream())
-			using (var splitter = new SplitterStream.SplitterStream(destination1, destination2))
+			using (var splitter = new SplitterStream(destination1, destination2))
 			using (var destination1Reader = new StreamReader(destination1))
 			using (var destination2Reader = new StreamReader(destination2)) {
 				source.CopyTo(splitter);

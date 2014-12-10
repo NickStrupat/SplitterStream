@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace SplitterStream {
+namespace SplitterStreams {
 	public class SplitterStream : Stream {
 		private readonly Stream[] destinations;
 		public SplitterStream(params Stream[] destinations) {
