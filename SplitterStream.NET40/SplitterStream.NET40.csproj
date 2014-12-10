@@ -7,8 +7,8 @@
     <ProjectGuid>{06DD5BC9-F132-48F5-9747-66508A7ADB26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SplitterStream.NET40</RootNamespace>
-    <AssemblyName>SplitterStream.NET40</AssemblyName>
+    <RootNamespace>SplitterStream</RootNamespace>
+    <AssemblyName>SplitterStream</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
