@@ -1,0 +1,64 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+
+namespace SplitterStream {
+	public class SplitterStream : Stream {
+		private readonly Stream[] destinations;
+		public SplitterStream(params Stream[] destinations) {
+			this.destinations = destinations;
+		}
+		public override void Flush() {
+			foreach (var destination in destinations)
+				destination.Flush();
+		}
+		public override Int64 Seek(Int64 offset, SeekOrigin origin) {
+			throw new InvalidOperationException();
+		}
+		public override void SetLength(Int64 value) {
+			throw new InvalidOperationException();
+		}
+		public override Int32 Read(Byte[] buffer, Int32 offset, Int32 count) {
+			throw new InvalidOperationException();
+		}
+		public override void Write(Byte[] buffer, Int32 offset, Int32 count) {
+			foreach (var destination in destinations)
+				destination.Write(buffer, offset, count);
+		}
+		public override Boolean CanRead {
+			get { return false; }
+		}
+		public override Boolean CanSeek {
+			get { return false; }
+		}
+		public override Boolean CanWrite {
+			get { return destinations.All(x => x.CanWrite); }
+		}
+		public override Int64 Length {
+			get { throw new InvalidOperationException(); }
+		}
+		public override Int64 Position {
+			get { throw new InvalidOperationException(); }
+			set { throw new InvalidOperationException(); }
+		}
+	}
+
+	public class ConcurrentSplitterStream : SplitterStream {
+		public ConcurrentSplitterStream(params Stream[] destinations) : base(destinations) { }
+		private readonly Object syncRoot = new Object();
+		public override void Flush() {
+			lock(syncRoot)
+				base.Flush();
+		}
+		public override void Write(Byte[] buffer, Int32 offset, Int32 count) {
+			lock(syncRoot)
+				base.Write(buffer, offset, count);
+		}
+		public override Boolean CanWrite {
+			get {
+				lock(syncRoot)
+					return base.CanWrite;
+			}
+		}
+	}
+}
