@@ -42,23 +42,4 @@ namespace SplitterStream {
 			set { throw new InvalidOperationException(); }
 		}
 	}
-
-	public class ConcurrentSplitterStream : SplitterStream {
-		public ConcurrentSplitterStream(params Stream[] destinations) : base(destinations) { }
-		private readonly Object syncRoot = new Object();
-		public override void Flush() {
-			lock(syncRoot)
-				base.Flush();
-		}
-		public override void Write(Byte[] buffer, Int32 offset, Int32 count) {
-			lock(syncRoot)
-				base.Write(buffer, offset, count);
-		}
-		public override Boolean CanWrite {
-			get {
-				lock(syncRoot)
-					return base.CanWrite;
-			}
-		}
-	}
 }
