@@ -17,11 +17,14 @@ namespace SplitterStreams.Test {
 			using (var destination1Reader = new StreamReader(destination1))
 			using (var destination2Reader = new StreamReader(destination2)) {
 				source.CopyTo(splitter);
+
 				destination1.Position = 0;
-				var text1 = destination1Reader.ReadToEnd();
-				Assert.AreEqual(text, text1);
 				destination2.Position = 0;
+
+				var text1 = destination1Reader.ReadToEnd();
 				var text2 = destination2Reader.ReadToEnd();
+
+				Assert.AreEqual(text, text1);
 				Assert.AreEqual(text, text2);
 			}
 		}
