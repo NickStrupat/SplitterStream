@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SplitterStreams {
 	public class SplitterStream : Stream {
@@ -25,6 +27,11 @@ namespace SplitterStreams {
 			foreach (var destination in destinations)
 				destination.Write(buffer, offset, count);
 		}
+#if NET45
+		public override Task WriteAsync(Byte[] buffer, Int32 offset, Int32 count, CancellationToken cancellationToken) {
+			return Task.WhenAll(destinations.Select(destination => destination.WriteAsync(buffer, offset, count, cancellationToken)));
+		}
+#endif
 		public override Boolean CanRead {
 			get { return false; }
 		}

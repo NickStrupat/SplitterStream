@@ -16,7 +16,8 @@ namespace SplitterStreams.Test {
 			using (var splitter = new SplitterStream(destination1, destination2))
 			using (var destination1Reader = new StreamReader(destination1))
 			using (var destination2Reader = new StreamReader(destination2)) {
-				source.CopyTo(splitter);
+				splitter.WriteAsync(bytes, 0, bytes.Length).Wait();
+				//source.CopyToAsync(splitter).Wait();
 
 				destination1.Position = 0;
 				destination2.Position = 0;
